@@ -445,13 +445,13 @@ def main():
     # Sidebar controls
     st.sidebar.header("⚙️ Controls")
 
-    threshold = st.sidebar.slider(
-        "Similarity Threshold",
+    similarity_range = st.sidebar.slider(
+        "Similarity Range",
         min_value=0.5,
         max_value=1.0,
-        value=0.8,
+        value=(0.8, 1.0),
         step=0.01,
-        help="Minimum similarity score to show connections"
+        help="Range of similarity scores to show connections (min, max)"
     )
 
     visualization_type = st.sidebar.radio(
@@ -467,7 +467,10 @@ def main():
 
     # Get connections
     with st.spinner("Computing connections..."):
-        edges_df = get_connections(similarity_matrix, threshold, passages_df)
+        # Use lower bound of range as threshold for initial filtering
+        edges_df = get_connections(similarity_matrix, similarity_range[0], passages_df)
+        # Filter by upper bound
+        edges_df = edges_df[(edges_df['similarity'] >= similarity_range[0]) & (edges_df['similarity'] <= similarity_range[1])]
 
     # Filter by search
     if search_query:
