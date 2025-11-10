@@ -6,10 +6,14 @@ import plotly.graph_objects as go
 import plotly.express as px
 import networkx as nx
 from collections import defaultdict
+import os
+from pathlib import Path
 
-# Configuration
-EMBEDDINGS_FILE = "../data/pericopes_embeddings.npy"
-PASSAGES_FILE = "../data/pericopes_with_text.csv"
+# Configuration - use absolute paths relative to this script
+SCRIPT_DIR = Path(__file__).parent
+DATA_DIR = SCRIPT_DIR.parent / "data"
+EMBEDDINGS_FILE = DATA_DIR / "pericopes_embeddings.npy"
+PASSAGES_FILE = DATA_DIR / "pericopes_with_text.csv"
 
 # Bible book order and testament
 BIBLE_BOOKS_ORDER = [
